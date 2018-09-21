@@ -1,4 +1,4 @@
-import { ClientError, GraphQLError, Headers as HttpHeaders, Options, Variables } from './types'
+import { ClientError, DynamicHeaders, DynamicHeaderValue, GraphQLError, Headers as HttpHeaders, Options, Variables } from './types'
 export { ClientError } from './types'
 import 'cross-fetch/polyfill'
 
@@ -24,7 +24,7 @@ export class GraphQLClient {
 
     const response = await fetch(this.url, {
       method: 'POST',
-      headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+      headers: this.processHeaders(Object.assign({ 'Content-Type': 'application/json' }, headers)),
       body,
       ...others,
     })
@@ -57,7 +57,7 @@ export class GraphQLClient {
 
     const response = await fetch(this.url, {
       method: 'POST',
-      headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+      headers: this.processHeaders(Object.assign({ 'Content-Type': 'application/json' }, headers)),
       body,
       ...others,
     })
@@ -91,6 +91,15 @@ export class GraphQLClient {
       this.options.headers = { [key]: value }
     }
     return this
+  }
+
+  processHeaders(headers: DynamicHeaders): HttpHeaders {
+    for (let name in headers) {
+      if (typeof headers[name] === 'function') {
+        headers[name] = (headers[name] as DynamicHeaderValue)()
+      }
+    }
+    return headers as HttpHeaders
   }
 }
 

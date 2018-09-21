@@ -52,6 +52,30 @@ client.request(query, variables).then(data => console.log(data))
 
 ## Examples
 
+### Dynamic headers
+
+```js
+import { GraphQLClient } from 'graphql-request'
+import store from './store'
+
+const client = new GraphQLClient('my-endpoint', {
+  headers: {
+    Authorization: () => store.getIdentity().getToken(),
+  },
+})
+
+const query = `{
+  Movie(title: "Inception") {
+    releaseDate
+    actors {
+      name
+    }
+  }
+}`
+
+client.request(query).then(data => console.log(data))
+```
+
 ### Authentication via HTTP header
 
 ```js

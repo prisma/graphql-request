@@ -1,12 +1,18 @@
 export type Variables = { [key: string]: any }
 
+export interface DynamicHeaderValue {
+  (): string
+}
+export interface DynamicHeaders {
+  [key: string]: string | DynamicHeaderValue
+}
 export interface Headers {
   [key: string]: string
 }
 
 export interface Options {
   method?: RequestInit['method']
-  headers?: Headers
+  headers?: DynamicHeaders
   mode?: RequestInit['mode']
   credentials?: RequestInit['credentials']
   cache?: RequestInit['cache']

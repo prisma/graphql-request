@@ -124,6 +124,21 @@ test('extra fetch options', async (t) => {
   })
 })
 
+test('dynamic header', async (t) => {
+  const HEADER_VALUE = 'dynmic header value'
+  const client = new GraphQLClient('https://mock-api.com/graphql', {
+    headers: {
+      'Authorization': () => {return HEADER_VALUE}
+    }
+  })
+  await mock({
+    body: { data: {test: 'test'} }
+  }, async () => {
+    await client.request('query { test }')
+    t.deepEqual(fetchMock.lastCall()[1].headers!['Authorization'], HEADER_VALUE)
+  })
+})
+
 async function mock(response: any, testFn: () => Promise<void>) {
   fetchMock.mock({
     matcher: '*',
