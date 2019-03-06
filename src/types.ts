@@ -1,3 +1,6 @@
+import http = require('http');
+import https = require('https');
+
 export type Variables = { [key: string]: any }
 
 export interface Headers {
@@ -5,6 +8,7 @@ export interface Headers {
 }
 
 export interface Options {
+  agent?: false | http.Agent | https.Agent;
   method?: RequestInit['method']
   headers?: Headers
   mode?: RequestInit['mode']
