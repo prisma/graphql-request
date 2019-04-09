@@ -41,7 +41,7 @@ export class ClientError extends Error {
   request: GraphQLRequestContext
 
   constructor (response: GraphQLResponse, request: GraphQLRequestContext) {
-    const message = `${ClientError.extractMessage(response)}: ${JSON.stringify({ response, request })}`
+    const message = ClientError.extractMessage(response)
 
     super(message)
 
