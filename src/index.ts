@@ -14,6 +14,7 @@ export class GraphQLClient {
   async rawRequest<T extends any>(
     query: string,
     variables?: Variables,
+    extendHeaders?: HttpHeaders
   ): Promise<{ data?: T, extensions?: any, headers: Headers, status: number, errors?: GraphQLError[] }> {
     const { headers, ...others } = this.options
 
@@ -24,7 +25,7 @@ export class GraphQLClient {
 
     const response = await fetch(this.url, {
       method: 'POST',
-      headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+      headers: Object.assign({ 'Content-Type': 'application/json' }, headers, extendHeaders || {}),
       body,
       ...others,
     })
@@ -47,6 +48,7 @@ export class GraphQLClient {
   async request<T extends any>(
     query: string,
     variables?: Variables,
+    extendHeaders?: HttpHeaders
   ): Promise<T> {
     const { headers, ...others } = this.options
 
@@ -57,7 +59,7 @@ export class GraphQLClient {
 
     const response = await fetch(this.url, {
       method: 'POST',
-      headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+      headers: Object.assign({ 'Content-Type': 'application/json' }, headers, extendHeaders || {}),
       body,
       ...others,
     })
@@ -98,20 +100,22 @@ export async function rawRequest<T extends any>(
   url: string,
   query: string,
   variables?: Variables,
+  headers?: HttpHeaders
 ): Promise<{ data?: T, extensions?: any, headers: Headers, status: number, errors?: GraphQLError[] }> {
   const client = new GraphQLClient(url)
 
-  return client.rawRequest<T>(query, variables)
+  return client.rawRequest<T>(query, variables, headers)
 }
 
 export async function request<T extends any>(
   url: string,
   query: string,
   variables?: Variables,
+  headers?: HttpHeaders
 ): Promise<T> {
   const client = new GraphQLClient(url)
 
-  return client.request<T>(query, variables)
+  return client.request<T>(query, variables, headers)
 }
 
 export default request
