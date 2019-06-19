@@ -37,7 +37,7 @@
     "size": "bundlesize"
   },
   "dependencies": {
-    "cross-fetch": "2.2.2"
+    "cross-fetch": "3.0.4"
   },
   "devDependencies": {
     "@types/fetch-mock": "5.12.2",
