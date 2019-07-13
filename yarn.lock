@@ -1290,12 +1290,12 @@ fast-diff@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.1.1.tgz#0aea0e4e605b6a2189f0e936d4b7fbaf1b7cfd9b"
 
-fetch-cookie@0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/fetch-cookie/-/fetch-cookie-0.7.2.tgz#5be512f7121b0bcd2e344350ad717727ac3b1a5d"
+fetch-cookie@0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/fetch-cookie/-/fetch-cookie-0.7.3.tgz#b8d023f421dd2b2f4a0eca9cd7318a967ed4eed8"
   dependencies:
     es6-denodeify "^0.1.1"
-    tough-cookie "^2.3.1"
+    tough-cookie "^2.3.3"
 
 fetch-mock@5.13.1:
   version "5.13.1"
@@ -2588,9 +2588,9 @@ pseudomap@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/pseudomap/-/pseudomap-1.0.2.tgz#f052a28da70e618917ef0a8ac34c1ae5a68286b3"
 
-psl@^1.1.24:
-  version "1.1.29"
-  resolved "https://registry.yarnpkg.com/psl/-/psl-1.1.29.tgz#60f580d360170bb722a797cc704411e6da850c67"
+psl@^1.1.28:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/psl/-/psl-1.2.0.tgz#df12b5b1b3a30f51c329eacbdef98f3a6e136dc6"
 
 pump@^1.0.0:
   version "1.0.3"
@@ -2609,6 +2609,10 @@ pump@^2.0.1:
 punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
+
+punycode@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
 
 qs@~6.4.0:
   version "6.4.0"
@@ -3197,12 +3201,12 @@ to-fast-properties@^1.0.1, to-fast-properties@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-1.0.3.tgz#b83571fa4d8c25b82e231b06e3a3055de4ca1a47"
 
-tough-cookie@^2.3.1:
-  version "2.4.3"
-  resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.4.3.tgz#53f36da3f47783b0925afa06ff9f3b165280f781"
+tough-cookie@^2.3.3:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.5.0.tgz#cd9fb2a0aa1d5a12b473bd9fb96fa3dcff65ade2"
   dependencies:
-    psl "^1.1.24"
-    punycode "^1.4.1"
+    psl "^1.1.28"
+    punycode "^2.1.1"
 
 tough-cookie@~2.3.0:
   version "2.3.2"

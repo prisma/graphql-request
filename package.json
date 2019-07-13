@@ -44,7 +44,7 @@
     "@types/node": "8.5.5",
     "ava": "0.25.0",
     "bundlesize": "0.17.0",
-    "fetch-cookie": "0.7.2",
+    "fetch-cookie": "0.7.3",
     "fetch-mock": "5.13.1",
     "tslint": "5.9.1",
     "tslint-config-standard": "7.0.0",
