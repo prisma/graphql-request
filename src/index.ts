@@ -1,16 +1,29 @@
 /// <reference lib="dom" />
 
-import { ClientError, GraphQLError, Variables } from './types'
+import { ClientError, GraphQLError, Variables, HasOperationNameKey } from './types'
 
 export { ClientError } from './types'
 
 export class GraphQLClient {
   private url: string
-  private options: RequestInit
+  private options: RequestInit & HasOperationNameKey
 
-  constructor(url: string, options?: RequestInit) {
+  constructor(url: string, options?: RequestInit & HasOperationNameKey) {
     this.url = url
     this.options = options || {}
+  }
+
+  private extractOperationName(operationNameKey?: string, variables?: Variables) {
+    if (!operationNameKey)
+      operationNameKey = "__operation";
+
+    var operationName = variables ? variables[operationNameKey] : null;
+    if (operationName) {
+      // Cleanup operationNameKey from variables
+      delete (variables as any)[operationNameKey];
+      return { operationName }
+    }
+    return null;
   }
 
   async rawRequest<T = any>(
@@ -23,11 +36,12 @@ export class GraphQLClient {
     status: number
     errors?: GraphQLError[]
   }> {
-    const { headers, ...others } = this.options
+    const { headers, operationNameKey, ...others } = this.options
 
     const body = JSON.stringify({
       query,
       variables: variables ? variables : undefined,
+      ...this.extractOperationName(operationNameKey, variables)
     })
 
     const response = await fetch(this.url, {
@@ -52,11 +66,12 @@ export class GraphQLClient {
   }
 
   async request<T = any>(query: string, variables?: Variables): Promise<T> {
-    const { headers, ...others } = this.options
+    const { headers, operationNameKey, ...others } = this.options
 
     const body = JSON.stringify({
       query,
       variables: variables ? variables : undefined,
+      ...this.extractOperationName(operationNameKey, variables)
     })
 
     const response = await fetch(this.url, {

@@ -1,5 +1,9 @@
 export type Variables = { [key: string]: any }
 
+export interface HasOperationNameKey {
+  operationNameKey?: string;
+}
+
 export interface GraphQLError {
   message: string
   locations: { line: number; column: number }[]
