@@ -117,6 +117,42 @@ test('basic error with raw request', async () => {
   )
 })
 
+describe('middleware', () => {
+  let client: GraphQLClient
+  let requestMiddleware: jest.Mock
+  let responseMiddleware: jest.Mock
+
+  beforeEach(() => {
+    ctx.mock({
+      body: {
+        data: {
+          result: 123,
+        },
+      },
+    }).body
+
+    requestMiddleware = jest.fn(req => req)
+    responseMiddleware = jest.fn()
+    client = new GraphQLClient(ctx.url, { requestMiddleware, responseMiddleware })
+  })
+
+  it('request', async () => {
+    const requestPromise = client.request<{ result: number }>(`x`)
+    expect(requestMiddleware).toBeCalled()
+    const res = await requestPromise
+    expect(responseMiddleware).toBeCalled()
+    expect(res.result).toBe(123)
+  })
+
+  it('rawRequest', async () => {
+    const requestPromise = client.rawRequest<{ result: number }>(`x`)
+    expect(requestMiddleware).toBeCalled()
+    const res = await requestPromise
+    expect(responseMiddleware).toBeCalled()
+    expect(res.data?.result).toBe(123)
+  })
+})
+
 // todo needs to be tested in browser environment
 // the options under test here aren't used by node-fetch
 test.skip('extra fetch options', async () => {

@@ -1,14 +1,14 @@
 import fetch from 'cross-fetch'
-import { ClientError, GraphQLError, Variables } from './types'
-import { Request, RequestInit, Response } from './types.dom'
+import { ClientError, GraphQLClientOptions, GraphQLError, Variables } from './types'
+import { Request, Response } from './types.dom'
 
 export { ClientError } from './types'
 
 export class GraphQLClient {
   private url: string
-  private options: RequestInit
+  private options: GraphQLClientOptions
 
-  constructor(url: string, options?: RequestInit) {
+  constructor(url: string, options?: GraphQLClientOptions) {
     this.url = url
     this.options = options || {}
   }
@@ -23,19 +23,23 @@ export class GraphQLClient {
     status: number
     errors?: GraphQLError[]
   }> {
-    const { headers, ...others } = this.options
+    const { headers, requestMiddleware, responseMiddleware, ...others } = this.options
 
     const body = JSON.stringify({
       query,
       variables: variables ? variables : undefined,
     })
-
-    const response = await fetch(this.url, {
+    const request = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...headers },
       body,
       ...others,
-    })
+    }
+
+    const response = await fetch(this.url, requestMiddleware ? requestMiddleware(request) : request)
+    if (responseMiddleware) {
+      responseMiddleware(response);
+    }
 
     const result = await getResult(response)
 
@@ -52,20 +56,24 @@ export class GraphQLClient {
   }
 
   async request<T = any>(query: string, variables?: Variables): Promise<T> {
-    const { headers, ...others } = this.options
+    const { headers, requestMiddleware, responseMiddleware, ...others } = this.options
 
     const body = JSON.stringify({
       query,
       variables: variables ? variables : undefined,
     })
 
-    const response = await fetch(this.url, {
+    const request = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', ...headers },
       body,
       ...others,
-    })
+    };
 
+    const response = await fetch(this.url, requestMiddleware ? requestMiddleware(request) : request)
+    if (responseMiddleware) {
+      responseMiddleware(response);
+    }
     const result = await getResult(response)
 
     if (response.ok && !result.errors && result.data) {
