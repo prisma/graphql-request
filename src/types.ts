@@ -1,4 +1,11 @@
+import { RequestInit, Response } from "./types.dom"
+
 export type Variables = { [key: string]: any }
+
+export interface GraphQLClientOptions extends RequestInit {
+  requestMiddleware?: (request: RequestInit) => RequestInit
+  responseMiddleware?: (response: Response) => void
+}
 
 export interface GraphQLError {
   message: string
