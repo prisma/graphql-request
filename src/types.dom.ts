@@ -293,7 +293,8 @@ export interface RequestInit {
   referrerPolicy?: ReferrerPolicy
   signal?: AbortSignal | null
   timeout?: number
-  window?: any
+  window?: any,
+  requestFormatter?: (payload: RequestInit) => Promise<RequestInit> | RequestInit;
 }
 
 interface Body {

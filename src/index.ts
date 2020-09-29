@@ -23,6 +23,10 @@ const resolveHeaders = (headers: RequestInit['headers']): Record<string, string>
   return oHeaders
 }
 
+async function formatPayload(payload: RequestInit, requestFormatter: RequestInit['requestFormatter']) {
+  return (requestFormatter) ? await requestFormatter(payload) : payload
+}
+
 /**
  * todo
  */
@@ -39,19 +43,21 @@ export class GraphQLClient {
     query: string,
     variables?: V
   ): Promise<{ data?: T; extensions?: any; headers: Headers; status: number; errors?: GraphQLError[] }> {
-    let { headers, ...others } = this.options
+    let { headers, requestFormatter, ...others } = this.options
     const body = createRequestBody(query, variables)
     headers = resolveHeaders(headers)
 
-    const response = await fetch(this.url, {
+    const payload = await formatPayload({
       method: 'POST',
       headers: {
         ...(typeof body === 'string' ? { 'Content-Type': 'application/json' } : {}),
-        ...headers,
+        ...headers
       },
       body,
       ...others,
-    })
+    }, requestFormatter)
+
+    const response = await fetch(this.url, payload)
 
     const result = await getResult(response)
 
@@ -71,20 +77,22 @@ export class GraphQLClient {
    * Send a GraphQL document to the server.
    */
   async request<T = any, V = Variables>(document: RequestDocument, variables?: V): Promise<T> {
-    let { headers, ...others } = this.options
+    let { headers, requestFormatter, ...others } = this.options
     headers = resolveHeaders(headers)
     const resolvedDoc = resolveRequestDocument(document)
     const body = createRequestBody(resolvedDoc, variables)
 
-    const response = await fetch(this.url, {
+    const payload = await formatPayload({
       method: 'POST',
       headers: {
         ...(typeof body === 'string' ? { 'Content-Type': 'application/json' } : {}),
-        ...headers,
+        ...headers
       },
       body,
       ...others,
-    })
+    }, requestFormatter)
+
+    const response = await fetch(this.url, payload)
 
     const result = await getResult(response)
 
