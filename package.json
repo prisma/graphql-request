@@ -2,6 +2,8 @@
   "name": "graphql-request",
   "version": "0.0.0-dripip",
   "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -36,7 +38,7 @@
     "dev:test": "jest --watch",
     "format": "prettier --write .",
     "prepublishOnly": "yarn build",
-    "build": "rm -rf dist && tsc -d",
+    "build": "rm -rf dist && tsc -d && tsc -p tsconfig.esm.json",
     "test": "jest",
     "release:stable": "dripip stable",
     "release:preview": "dripip preview",
