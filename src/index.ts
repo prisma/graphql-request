@@ -61,7 +61,7 @@ export class GraphQLClient {
 
     const result = await getResult(response)
 
-    if (response.ok && !result.errors && result.data) {
+    if (response.ok && result.data) {
       const { headers, status } = response
       return { ...result, headers, status }
     } else {
@@ -76,7 +76,7 @@ export class GraphQLClient {
   /**
    * Send a GraphQL document to the server.
    */
-  async request<T = any, V = Variables>(document: RequestDocument, variables?: V): Promise<T> {
+  async request<T = any, V = Variables>(document: RequestDocument, variables?: V): Promise<{ data?: T; errors?: GraphQLError[] }> {
     let { headers, fetch: localFetch = crossFetch, ...others } = this.options
     headers = resolveHeaders(headers)
     const resolvedDoc = resolveRequestDocument(document)
@@ -94,8 +94,8 @@ export class GraphQLClient {
 
     const result = await getResult(response)
 
-    if (response.ok && !result.errors && result.data) {
-      return result.data
+    if (response.ok && result.data) {
+      return result
     } else {
       const errorResult = typeof result === 'string' ? { error: result } : result
       throw new ClientError({ ...errorResult, status: response.status }, { query: resolvedDoc, variables })
@@ -175,7 +175,7 @@ export async function request<T = any, V = Variables>(
   url: string,
   document: RequestDocument,
   variables?: V
-): Promise<T> {
+): Promise<{ data?: T; errors?: GraphQLError[] }> {
   const client = new GraphQLClient(url)
   return client.request<T, V>(document, variables)
 }

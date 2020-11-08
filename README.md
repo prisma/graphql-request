@@ -125,7 +125,7 @@ async function main() {
     }
   `
 
-  const data = await graphQLClient.request(query)
+  const { data } = await graphQLClient.request(query)
   console.log(JSON.stringify(data, undefined, 2))
 }
 
@@ -177,7 +177,7 @@ async function main() {
     }
   `
 
-  const data = await graphQLClient.request(query)
+  const { data } = await graphQLClient.request(query)
   console.log(JSON.stringify(data, undefined, 2))
 }
 
@@ -209,7 +209,7 @@ async function main() {
     title: 'Inception',
   }
 
-  const data = await request(endpoint, query, variables)
+  const { data } = await request(endpoint, query, variables)
   console.log(JSON.stringify(data, undefined, 2))
 }
 
@@ -243,7 +243,7 @@ async function main() {
     title: 'Inception',
     releaseDate: 2010,
   }
-  const data = await graphQLClient.request(mutation, variables)
+  const { data } = await graphQLClient.request(mutation, variables)
 
   console.log(JSON.stringify(data, undefined, 2))
 }
@@ -273,8 +273,9 @@ async function main() {
   `
 
   try {
-    const data = await request(endpoint, query)
+    const { data,errors } = await request(endpoint, query)
     console.log(JSON.stringify(data, undefined, 2))
+    console.log(JSON.stringify(errors, undefined, 2))
   } catch (error) {
     console.error(JSON.stringify(error, undefined, 2))
     process.exit(1)
@@ -305,7 +306,7 @@ async function main() {
     }
   `
 
-  const data = await request(endpoint, query)
+  const { data } = await request(endpoint, query)
   console.log(JSON.stringify(data, undefined, 2))
 }
 
@@ -343,7 +344,7 @@ async function main() {
     }
   `
 
-  const data = await graphQLClient.rawRequest(query)
+  const { data } = await graphQLClient.rawRequest(query)
   console.log(JSON.stringify(data, undefined, 2))
 }
 
@@ -380,7 +381,7 @@ async function main() {
     }
   `
 
-  const data = await graphQLClient.rawRequest(query)
+  const { data } = await graphQLClient.rawRequest(query)
   console.log(JSON.stringify(data, undefined, 2))
 }
 

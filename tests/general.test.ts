@@ -4,7 +4,7 @@ import { setupTestServer } from './__helpers'
 const ctx = setupTestServer()
 
 test('minimal query', async () => {
-  const { data } = ctx.res({
+  const res = ctx.res({
     body: {
       data: {
         me: {
@@ -14,7 +14,7 @@ test('minimal query', async () => {
     },
   }).spec.body
 
-  expect(await request(ctx.url, `{ me { id } }`)).toEqual(data)
+  expect(await request(ctx.url, `{ me { id } }`)).toEqual(res)
 })
 
 test('minimal raw query', async () => {
@@ -61,7 +61,7 @@ test('minimal raw query with response headers', async () => {
 })
 
 test('content-type with charset', async () => {
-  const { data } = ctx.res({
+  const res = ctx.res({
     // headers: { 'Content-Type': 'application/json; charset=utf-8' },
     body: {
       data: {
@@ -72,7 +72,7 @@ test('content-type with charset', async () => {
     },
   }).spec.body
 
-  expect(await request(ctx.url, `{ me { id } }`)).toEqual(data)
+  expect(await request(ctx.url, `{ me { id } }`)).toEqual(res)
 })
 
 test('basic error', async () => {

@@ -59,7 +59,7 @@ test('file upload using global.FormData', async () => {
     file: createReadStream(join(__dirname, fileName)),
   })
 
-  expect(result).toEqual({ uploadFile: fileName })
+  expect(result).toEqual({ data:{uploadFile: fileName} })
 })
 
 test('file upload still works if no global.FormData provided', async () => {
@@ -73,5 +73,5 @@ test('file upload still works if no global.FormData provided', async () => {
     file: createReadStream(join(__dirname, fileName)),
   })
 
-  expect(result).toEqual({ uploadFile: fileName })
+  expect(result).toEqual({ data:{uploadFile: fileName }})
 })
