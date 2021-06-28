@@ -6,6 +6,7 @@ export interface GraphQLError {
   message: string
   locations: { line: number; column: number }[]
   path: string[]
+  [key: string]: any;
 }
 
 export interface GraphQLResponse<T = any> {
