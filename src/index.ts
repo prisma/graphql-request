@@ -1,7 +1,15 @@
+import assert from 'assert'
 import crossFetch, * as CrossFetch from 'cross-fetch'
 import { print } from 'graphql/language/printer'
 import createRequestBody from './createRequestBody'
-import { ClientError, GraphQLError, RequestDocument, Variables } from './types'
+import {
+  ClientError,
+  RequestDocument,
+  Variables,
+  SubscribePayload,
+  SubscribeOptions,
+  SubsciptionProtocol
+} from './types'
 import * as Dom from './types.dom'
 
 export { ClientError } from './types'
@@ -107,6 +115,29 @@ export class GraphQLClient {
     }
 
     return this
+  }
+
+  subscribe<T = any, V = Variables, E = any>(
+    payload: SubscribePayload<V, E>,
+    { protocol }: SubscribeOptions<T>
+  ): () => void {
+    // TODO: create class property protocol
+    const _protocol = protocol || this.protocol
+    // assertion is for js users
+    assert(
+      Object.values(SubsciptionProtocol).includes(protocol as SubsciptionProtocol),
+      `options.protocol should be SubsciptionProtocol: ${Object.values(SubsciptionProtocol).join(', ')}`
+    )
+    if (_protocol === SubsciptionProtocol.SUBSCRIPTION_TRANSPORT_WS) {
+      // TODO: subscribe by subscription-transport-ws client
+    } else if (_protocol === SubsciptionProtocol.GRAPHQL_WS) {
+      // TODO: subscribe by graphql-ws client
+    } else {
+      // Assertion is passed but behavior is not implemented.
+      throw Error(
+        'Unchecked protocol. This is a bug of graphql-request. Create an issue on https://github.com/prisma-labs/graphql-request'
+      )
+    }
   }
 }
 

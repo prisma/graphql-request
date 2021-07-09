@@ -1,6 +1,6 @@
-import { DocumentNode } from 'graphql/language/ast'
+import { DocumentNode } from 'graphql'
 
-export type Variables = { [key: string]: any }
+export type Variables = Record<string, any>
 
 export interface GraphQLError {
   message: string
@@ -28,7 +28,7 @@ export class ClientError extends Error {
   constructor(response: GraphQLResponse, request: GraphQLRequestContext) {
     const message = `${ClientError.extractMessage(response)}: ${JSON.stringify({
       response,
-      request,
+      request
     })}`
 
     super(message)
@@ -54,3 +54,28 @@ export class ClientError extends Error {
 }
 
 export type RequestDocument = string | DocumentNode
+
+export interface SubscribePayload<V = Variables, E = any> {
+  readonly document: RequestDocument
+  readonly operationName?: string
+  readonly variables?: V
+  readonly extensions?: E
+}
+
+export interface Observer<T> {
+  next?(value: T): void
+  error?(errorValue: any): void
+  complete?(): void
+}
+
+export enum SubsciptionProtocol {
+  // REF: https://github.com/apollographql/subscriptions-transport-ws
+  SUBSCRIPTION_TRANSPORT_WS = 'subscription-transport-ws',
+  // REF: https://github.com/enisdenjo/graphql-ws
+  GRAPHQL_WS = 'graphql-ws'
+}
+
+export interface SubscribeOptions<T> {
+  readonly observer: Observer<T>
+  readonly protocol?: SubsciptionProtocol
+}
