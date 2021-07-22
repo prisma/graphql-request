@@ -140,7 +140,7 @@ main().catch((error) => console.error(error))
 If you want to set headers after the GraphQLClient has been initialised, you can use the `setHeader()` or `setHeaders()` functions.
 
 ```js
-import { setHeaders, setHeader, GraphQLClient } from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 
 const client = new GraphQLClient(endpoint)
 
