@@ -62,7 +62,7 @@ test('minimal raw query with response headers', async () => {
 
 test('content-type with charset', async () => {
   const { data } = ctx.res({
-    // headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
     body: {
       data: {
         me: {
